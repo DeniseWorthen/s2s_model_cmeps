@@ -48,7 +48,7 @@ LD              =       $(FC) -mkl=sequential
 # flags #
 #########
 # default is 64-bit OpenMP non-hydrostatic build using AVX2
-DEBUG = Y
+DEBUG = N
 REPRO =
 VERBOSE =
 OPENMP = N
