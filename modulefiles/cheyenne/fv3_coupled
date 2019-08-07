@@ -15,12 +15,15 @@ module-whatis "loads NEMS FV3 prerequisites for Cheyenne/Intel"
 ## load programming environment
 ## this typically includes compiler, MPI and job scheduler
 ##
-module load ncarenv/1.2
+module reset
+module rm netcdf
+module load ncarenv/1.3
 module load intel/19.0.2
 module load mpt/2.19
-module load ncarcompilers/0.4.1
+module load ncarcompilers/0.5.0
 module load netcdf-mpi/4.6.1
-module load pnetcdf/1.11.0
+module load pnetcdf/1.11.1
+module load pio/2.4.3
 
 ##
 ## use pre-compiled EMSF library for above compiler / MPI combination
@@ -54,14 +57,6 @@ set    SIONLIB     /glade/p/ral/jntp/GMTB/tools/sionlib-1.7.2/intel-18.0.5/mpt-2
 setenv SIONLIB     ${SIONLIB}
 setenv SIONLIB_INC "-I${SIONLIB}/include -I${SIONLIB}/include/mod_64"
 setenv SIONLIB_LIB "-L${SIONLIB}/lib -lsionmpi_f90_64 -lsionser_f90_64 -lsionmpi_64 -lsiongen_64 -lsionser_64 -lsioncom_64 -lsioncom_64_lock_none"
-
-##
-## PIO library
-##
-set    PIOLIB      /glade/u/apps/ch/opt/pio/2.4.3/impi/2019.2.187/intel/19.0.2
-setenv PIOLIB      ${PIOLIB} 
-setenv PIOLIB_INC  "-I${PIOLIB}/include"
-setenv PIOLIB_LIB  "-L${PIOLIB}/lib -lgptl -lpiof -lpioc"
 
 ##
 ## Set compiler environment variables for CCPP
