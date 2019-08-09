@@ -51,6 +51,7 @@ OPENMP = Y
 AVX2 = Y
 HYDRO = N
 CCPP = N
+CMEPS = Y
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
@@ -172,6 +173,10 @@ CPPDEFS += -DCCPP
 CFLAGS += -I$(PATH_CCPP)/include
 FFLAGS += -I$(PATH_CCPP)/include
 LDFLAGS += -L$(PATH_CCPP)/lib -lccpp
+endif
+
+ifeq ($(CMEPS),Y)
+CPPDEFS += -DCMEPS
 endif
 
 LDFLAGS += $(LIBS)
