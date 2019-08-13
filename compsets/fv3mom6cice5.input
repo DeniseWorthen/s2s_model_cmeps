@@ -559,8 +559,8 @@ test cpld_fv3_384_mom6_cice_cold_atm_flux: fv3_mom6_cice.exe {
 
     spawn execute { 
         # Run: ATM/MED runs with threads while OCN/CICE get threads but uses all pets/node 
-        {"@[build%target]", ranks="@[ATMTASKS]", threads="@[THRD]", ppn="@[TPN]" }
-        {"@[build%target]", ranks="@[OTASKS]", threads="@[THRD]", ppn="24" }
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
+        #{"@[build%target]", ranks="@[OTASKS]", threads="@[THRD]", ppn="24" }
     } 
 } 
  
@@ -888,7 +888,6 @@ test cpld_fv3_384_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe {
  
     spawn execute { 
         # Run: ATM/MED with threads and OCN/ICE with all pets/node
-        {"@[build%target]", ranks="@[ATMTASKS]", threads="@[THRD]", ppn="@[TPN]" }
-        {"@[build%target]", ranks="@[OTASKS]", threads="@[THRD]", ppn="24" }
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
     } 
 } 

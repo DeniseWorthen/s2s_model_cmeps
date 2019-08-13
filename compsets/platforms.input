@@ -37,8 +37,9 @@ load 'gaea.input'
 platform theia {
     use platform.defaults
     MACHINE_ID='theia' # Name of this platform.
+    PARTITION='theia'
 
-    MPI='impi'
+    MPI='srun'
 
     CPU_ACCOUNT='nems'
     BUILD_QUEUE='&BUILDQ;' # Queue to use for compilation jobs
@@ -93,39 +94,49 @@ platform theia {
         # This function is used at PARSE TIME to detect whether we are
         # on NOAA Theia.  It must be very fast and low resource usage
         # since the parser runs it.
+        if ( ! which sbatch > /dev/null 2>&1 ) ; then
+            exit 1
+        fi
         if [[ -d /scratch3 && -d /scratch4 && -d /contrib ]] ; then
             exit 0
         fi
         exit 1
     ]]]
 
+
     # ROCOTO SUPPORT ---------------------------------------------------
     rocoto={
         install_dir="@[HOMErt]"
         log_dir="@[TMPrt]/log"
-        scheduler="moabtorque"
+        scheduler="slurm"
         entities=[[[
   <!ENTITY SHORTQ "batch">
   <!ENTITY LONGQ "batch">
-  <!ENTITY BUILDQ "service">
+  <!ENTITY BUILDQ "batch"> <!-- NOTE: If you change this, you must change the partition too -->
 ]]]
         build_resources=[[[
       <!-- Build job resources minus wallclock -->
       <queue>@[BUILD_QUEUE]</queue>
-      <memory></memory>
-      <cores>1</cores>
+      <partition>@[PARTITION]</partition>
+      <cores>12</cores> <!-- 2 cores ensures exclusive access on Theia -->
+      <envar><name>PRODUTIL_RUN_NODESIZE</name><value>@[cores_per_node]</value></envar>
 ]]]
         short_test_resources=[[[
-    <!-- Short test job -->
-    <queue>@[SHORT_TEST_QUEUE]</queue>
-    <memory></memory> <!-- Unlimited memory -->
+      <!-- Short test job -->
+      <queue>@[SHORT_TEST_QUEUE]</queue>
+      <partition>@[PARTITION]</partition>
+      <memory></memory> <!-- Unlimited memory -->
+      <envar><name>PRODUTIL_RUN_NODESIZE</name><value>@[cores_per_node]</value></envar>
 ]]]
         long_test_resources=[[[
-    <!-- Long test job -->
-    <queue>@[LONG_TEST_QUEUE]</queue>
-    <memory></memory> <!-- Unlimited memory -->
+      <!-- Long test job -->
+      <queue>@[LONG_TEST_QUEUE]</queue>
+      <partition>@[PARTITION]</partition>
+      <memory></memory> <!-- Unlimited memory -->
+      <envar><name>PRODUTIL_RUN_NODESIZE</name><value>@[cores_per_node]</value></envar>
 ]]]
     }
+
 
 }
 
