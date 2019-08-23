@@ -31,17 +31,10 @@ module load w3nco/v2.0.6
 module load w3emc/v2.0.5
 module load nemsio/v2.2.3
 
-## PIO for CMEPS
-set PIO_DIR /scratch4/NCEPDEV/nems/noscrub/Rocky.Dunlap/cmeps/LIBS/pio-2.4.3
-set GPTL_DIR /scratch4/NCEPDEV/nems/noscrub/Rocky.Dunlap/cmeps/LIBS/gptl-5.6.0
-setenv PIO_LIBDIR ${PIO_DIR}/lib
-setenv PIO_INCDIR ${PIO_DIR}/include
-setenv GPTL_LIBDIR ${GPTL_DIR}/lib
-
 ##
 ## load ESMF library for above compiler / MPI combination
 ##
 module use /scratch4/NCEPDEV/nems/noscrub/emc.nemspara/soft/modulefiles
 module load yaml-cpp
-module load esmf/8.0.0bs44
-
+module load esmf/8.0.0bs47
+module load pio/2.4.4

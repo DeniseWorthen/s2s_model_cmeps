@@ -140,6 +140,7 @@ cpl_defaults = {
     MOM6_RESTART_SETTING='n'
     NPROC_ICE='48'
     DT_ATMOS='900' #needed for C96 cases
+    MEDIATOR='cmeps'
 }
 
 ########################################################################
@@ -249,7 +250,7 @@ test cpld_fv3_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe {
     DUMPFREQ_N='35' # to skip writing a restart, make the dumpfreq>run length
 
     # - nems.configure --- 
-    nems_configure='med_atm_ocn_ice' 
+    nems_configure="@[MEDIATOR]_atm_ocn_ice"
     med_model='nems' 
     med_petlist_bounds="0 197"
     atm_model='fv3'
@@ -425,7 +426,7 @@ test cpld_fv3_384_mom6_cice_cold_atm_flux: fv3_mom6_cice.exe {
     DUMPFREQ_N='35' # to skip writing a restart, make the dumpfreq>run length
 
     # - nems.configure --- 
-    nems_configure='medcold_atm_ocn_ice' 
+    nems_configure="@[MEDIATOR]cold_atm_ocn_ice"
     med_model='nems' 
     med_petlist_bounds="0 311"
     atm_model='fv3'
@@ -612,7 +613,7 @@ test cpld_fv3_mom6_cice_cold_atm_flux: fv3_mom6_cice.exe {
     DUMPFREQ_N='35' # to skip writing a restart, make the dumpfreq>run length
  
     # - nems.configure --- 
-    nems_configure='medcold_atm_ocn_ice' 
+    nems_configure="@[MEDIATOR]cold_atm_ocn_ice"
     med_model='nems' 
     med_petlist_bounds="0 197"
     atm_model='fv3'
@@ -741,7 +742,7 @@ test cpld_fv3_mom6_cice_cold_atm_flux: fv3_mom6_cice.exe {
       # test suite.
         "@[build%target]" .md5cmp. "@[fv3_mom6_cice.exe%md5sum]" 
     }
- 
+
     spawn execute { 
         # Run the  
         {"@[build%target]", ranks="@[TASKS]" } 
@@ -819,7 +820,7 @@ test cpld_fv3_384_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe {
 
  
     # - nems.configure --- 
-    nems_configure='med_atm_ocn_ice' 
+    nems_configure="@[MEDIATOR]_atm_ocn_ice"
     med_model='nems' 
     med_petlist_bounds="0 311"
     atm_model='fv3'

@@ -17,3 +17,7 @@
 [submodule "FMS"]
 	path = FMS
 	url = git://github.com/NOAA-EMC/FMS
+[submodule "CMEPS"]
+	path = CMEPS
+	url = https://github.com/ESCOMP/CMEPS.git
+	branch = nems_integration
