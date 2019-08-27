@@ -630,6 +630,8 @@ test cpld_fv3_mom6_cice_cold_atm_flux: fv3_mom6_cice.exe {
       #    WORK FILE  <=filter=   SOURCE FILE 
                   'input.nml'  <=atparse=  "@[PARMnems]/input.mom6.nml.IN"
             'model_configure'  <=atparse=  "@[PARMnems]/model_configure.IN"
+	            'fd.yaml'  <=copy=     "@[PARMnems]/fd.yaml"
+	             'pio_in'  <=copy=     "@[PARMnems]/pio_in"
                 'aerosol.dat'  <=copyfrom= "@[FV3_input_data]/INPUT"
  'co2historicaldata_201*.txt'  <=copyfrom= "@[FV3_input_data]/INPUT"
         'global_o3prdlos.f77'  <=copyfrom= "@[FV3_input_data]/INPUT"
