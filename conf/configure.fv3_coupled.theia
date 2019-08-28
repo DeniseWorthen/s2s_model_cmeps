@@ -52,11 +52,7 @@ AVX2 = Y
 HYDRO = N
 CCPP = N
 
-ifneq (,$(findstring CMEPS,$(COMPONENTS)))
-CMEPS=Y
-else
-CMEPS=N
-endif
+
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
