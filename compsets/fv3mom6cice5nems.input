@@ -1,7 +1,5 @@
+
 load 'fv3mom6cice5.input'
-
-########################################################################
-
 
 ######################################################################## 
  
@@ -21,6 +19,7 @@ test cpld_fv3_mom6_cice_2d_atm_flux_nems: fv3_mom6_cice_nems.exe {
         {"@[build%target]", ranks="@[TASKS]" } 
     } 
 } 
+######################################################################## 
 
 test cpld_fv3_384_mom6_cice_cold_atm_flux_nems: fv3_mom6_cice_nems.exe { 
     use cpld_fv3_384_mom6_cice_cold_atm_flux 
@@ -38,12 +37,14 @@ test cpld_fv3_384_mom6_cice_cold_atm_flux_nems: fv3_mom6_cice_nems.exe {
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
     } 
 } 
+######################################################################## 
  
 test cpld_fv3_mom6_cice_cold_atm_flux_nems: fv3_mom6_cice_nems.exe { 
     use cpld_fv3_mom6_cice_cold_atm_flux
  
-    build=fv3_mom6_cice_nems.exe 
     MEDIATOR='nems'
+
+    build=fv3_mom6_cice_nems.exe 
  
     prep=fv3_prep( 
         RUNDIR="@[RUNDIR]",modules="@[fv3_mom6_cice_nems.exe%modules.nems]", 
@@ -54,7 +55,7 @@ test cpld_fv3_mom6_cice_cold_atm_flux_nems: fv3_mom6_cice_nems.exe {
         {"@[build%target]", ranks="@[TASKS]" } 
     } 
 } 
- 
+######################################################################## 
  
 test cpld_fv3_384_mom6_cice_2d_atm_flux_nems: fv3_mom6_cice_nems.exe { 
     use cpld_fv3_384_mom6_cice_2d_atm_flux 
