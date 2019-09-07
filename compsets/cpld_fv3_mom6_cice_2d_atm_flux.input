@@ -181,8 +181,8 @@ test cpld_fv3_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe {
         'MOM6_RESTART/MOM.res_4.nc'           .bitcmp. "@[CNTL]/RESTART/"
         'restart/iced.2016-10-05-00000.nc'    .bitcmp. "@[CNTL]/RESTART/"
 #
-# 'ufs.s2s.c384_t025.jan.jul02.cpl.r.2016-10-03-03600.nc' .bitcmp. "@[CNTL]/RESTART/"
-#
+  'ufs.s2s.c384_t025.jan.jul02.cpl.r.2016-10-05-00000.nc' .bitcmp. "@[CNTL]/RESTART/"
+
       # Executable validation.  This makes an MD5 sum of the fv3.exe
       # for comparison against the MD5 sum made in the build job.
       # This is to ensure the executable did not change during the
