@@ -90,6 +90,10 @@ fv3_defaults = {
     LHEATSTRG='.F.'
     LGFDLMPRAD='.F.'
     EFFR_IN='.F.'
+    LDIAG_UGWP='.F.'
+    DO_UGWP='.F.'
+    DO_TOFD='.F.'
+    LSM='1'
     NA_INIT='1'
     READ_INCREMENT='.F.'
     FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24'
@@ -99,6 +103,7 @@ fv3_defaults = {
     FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
     FNSMCC="'global_soilmgldas.t126.384.190.grb',"
     FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb',"
+    LANDICE='.T.'
 
     ENS_NUM='1'
     SYEAR='2016'
@@ -116,6 +121,7 @@ fv3_defaults = {
     NFHOUT='3'
     NFHMAX_HF='12'
     NFHOUT_HF='1'
+    NSOUT='-1'
 
     QUILTING='.true.'
     WRITE_GROUP=1
@@ -127,7 +133,12 @@ fv3_defaults = {
     WRITE_FSYNCFLAG ='.false.'
     IMO='384'
     JMO='190'
+    H2O_PHYS='.F.'
 
+    DO_SPPT='.F.'
+    DO_SHUM='.F.'
+    DO_SKEB='.F.'
+    DO_SFCPERTS='.F.'
     SPPT='-999.0'
     SHUM='-999.0'
     SKEB='-999.0'
@@ -152,13 +163,29 @@ cpl_defaults = {
     NPROC_ICE='48'
     DT_ATMOS='900' #needed for C96 cases
     MEDIATOR='cmeps'
+# defaults for CICE runtype and restart writing
+    RUNTYPE='initial' 
+    DUMPFREQ='d' 
+    DUMPFREQ_N='35' 
+    USE_RESTART_TIME='.false.'
+# setting to true will allow Frazil FW and Salt to be
+# included in fluxes sent to ocean
+    FRAZIL_FWSALT='.false.'
+# default setting for runid
+    RUNID='unknown'
+# for FV3: default values will be changed if doing a warm-warm restart
+    WARM_START='.F.'
+    MAKE_NH='.T.'
+    NA_INIT='1'
+    EXTERNAL_IC='.T.'
+    NGGPS_IC='.T.'
+    MOUNTAIN='.F.'
 }
-
 ########################################################################
 # embeded bash script to create input files at prerun from specification 
 # in compset
 
-embed bash edit_inputs(CDATE,DT_CICE,NPROC_ICE,RUNTYPE,DUMPFREQ_N,DUMPFREQ,DT_THERM,DT_DYNAM) [[[
+embed bash edit_inputs(CDATE,DT_CICE,NPROC_ICE,RUNTYPE,USE_RESTART_TIME,FRAZIL_FWSALT,RUNID,DUMPFREQ_N,DUMPFREQ,DT_THERM,DT_DYNAM) [[[
 
 python <<EOT
 import os
@@ -168,14 +195,28 @@ fmt='%Y%m%d%H'
 dt = datetime.datetime.strptime("@[CDATE]", fmt)
 tt = dt.timetuple()
 
+# ice_calendar subroutine does not allow for writing restarts 
+# at hour frequencies
+# if DUMPFREQ is set as "h", then convert DUMPFREQ_N to seconds and
+# reset DUMPFREQ to "s"
+if("@[DUMPFREQ]" == "h"):
+ dumpn = int("@[DUMPFREQ_N]")
+ DUMPFREQ_N = str(dumpn*3600)
+ DUMPFREQ = "s"
+else:
+ DUMPFREQ_N = str("@[DUMPFREQ_N]")
+ DUMPFREQ = str("@[DUMPFREQ]")
+#
+
 jday=tt.tm_yday
 year=tt.tm_year
 month=tt.tm_mon
 day=tt.tm_mday
+hour=tt.tm_hour
 ymd=str(year)+str(month).zfill(2)+str(day).zfill(2)
 
 #ice_in
-istep0=(jday-1)*86400/int("@[DT_CICE]")
+istep0=((jday-1)*86400 + hour*3600)/int("@[DT_CICE]")
 
 with open("ice_in_template",'rt') as inf:
  with open("ice_in",'wf') as outf:
@@ -185,8 +226,11 @@ with open("ice_in_template",'rt') as inf:
              .replace('DT_CICE',"@[DT_CICE]") \
              .replace('NPROC_ICE',"@[NPROC_ICE]")\
              .replace('RUNTYPE',"@[RUNTYPE]") \
-             .replace('DUMPFREQ_N',"@[DUMPFREQ_N]") \
-             .replace('DUMPFREQ',"@[DUMPFREQ]")
+             .replace('RUNID',"@[RUNID]") \
+             .replace('USE_RESTART_TIME',"@[USE_RESTART_TIME]") \
+             .replace('DUMPFREQ_N',DUMPFREQ_N) \
+             .replace('DUMPFREQ',DUMPFREQ) \
+             .replace('FRAZIL_FWSALT',"@[FRAZIL_FWSALT]")
     outf.write(newline)
 
 #MOM_input
@@ -208,7 +252,6 @@ with open("diag_table_template",'rt') as inf:
     outf.write(newline)
 EOT
 ]]]
-
 ######################################################################### 
 
 load 'cpld_fv3_mom6_cice_cold_atm_flux.input'
