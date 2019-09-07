@@ -17,7 +17,7 @@ ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_attributes::
   Verbosity = 0
-  DumpFields = true
+  DumpFields = false
   ProfileMemory = false
 ::
 
@@ -26,7 +26,7 @@ OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
 OCN_attributes::
   Verbosity = 0
-  DumpFields = true
+  DumpFields = false
   ProfileMemory = false
 ::
 
@@ -35,7 +35,7 @@ ICE_model:                      @[ice_model]
 ICE_petlist_bounds:             @[ice_petlist_bounds]
 ICE_attributes::
   Verbosity = 0
-  DumpFields = true
+  DumpFields = false
   ProfileMemory = false
 ::
 
@@ -301,8 +301,8 @@ CLOCK_attributes::
       pause_option = never
       ref_tod = 0
       ref_ymd = 0
-      restart_n = 1
-      restart_option = nhours
+      restart_n = 2
+      restart_option = ndays
       restart_ymd = -999
       rof_cpl_dt = 1800
       start_tod = 0

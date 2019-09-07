@@ -10,11 +10,11 @@ load 'fv3mom6cice5nems.input'
 #run cpld_fv3_mom6_cice_2d_atm_flux @ fv3, coupledapp, warm
 #run cpld_fv3_384_mom6_cice_2d_atm_flux @ fv3, coupledapp, warm384
 
-#run cpld_fv3_mom6_cice_cold_atm_flux_nems @ fv3, coupledapp, coldnems,nems
+run cpld_fv3_mom6_cice_cold_atm_flux_nems @ fv3, coupledapp, coldnems,nems
 #run cpld_fv3_384_mom6_cice_cold_atm_flux_nems @ fv3, coupledapp, cold384nems,nems
 
-run cpld_fv3_mom6_cice_2d_atm_flux_nems @ fv3, coupledapp, warmnems,nems
-run cpld_fv3_384_mom6_cice_2d_atm_flux_nems @ fv3, coupledapp, warm384nems,nems
+#run cpld_fv3_mom6_cice_2d_atm_flux_nems @ fv3, coupledapp, warmnems,nems
+#run cpld_fv3_384_mom6_cice_2d_atm_flux_nems @ fv3, coupledapp, warm384nems,nems
 
 #Run the Benchmark 2 like cases (load inputs above) 
 #run cpld_fv3_384_mom6_cice_cold_bm2 @ benchmark, coldBM2

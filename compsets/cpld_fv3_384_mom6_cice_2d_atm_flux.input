@@ -114,8 +114,6 @@ test cpld_fv3_384_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe {
 # the diag_table_template will be edited in the prerun==>diag_table
         'diag_table_template'  <=copy=     "@[UGCS_input_data]/COUPLED384/diag_table_template"
                           '*'  <=copyfrom= "@[UGCS_input_data]/MEDIATOR384_@[MEDIATOR]"
-#'ufs.s2s.c384_t025.jan.jul02.cpl.r.2016-10-03-03600.nc' <=copy="@[RESTART_DIR]/ufs.s2s.c384_t025.jan.jul02.cpl.r.2016-10-03-03600.nc"
-#'rpointer.med' <=copy="@[RESTART_DIR]/rpointer.med"
     } 
 
     # Edit the templates for the compset parameters
@@ -130,7 +128,7 @@ test cpld_fv3_384_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe {
                     DUMPFREQ="@[DUMPFREQ]",
                     DT_THERM="@[DT_THERM_MOM6]",
                     DT_DYNAM="@[DT_DYNAM_MOM6]")
-
+ 
     # Specify output files:
     criteria output {
         # WORKFILE                            .comparison. TARGET
@@ -206,35 +204,14 @@ test cpld_fv3_384_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe {
         'MOM6_RESTART/MOM.res_4.nc'           .bitcmp. "@[CNTL]/RESTART/"
         'restart/iced.2016-10-05-00000.nc'    .bitcmp. "@[CNTL]/RESTART/"
 #
-        'mediator_FBaccumAtm_restart.tile1.nc'    .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumAtm_restart.tile2.nc'    .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumAtm_restart.tile3.nc'    .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumAtm_restart.tile4.nc'    .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumAtm_restart.tile5.nc'    .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumAtm_restart.tile6.nc'    .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumOcn_restart.nc'          .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumIce_restart.nc'          .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumLnd_restart.nc'          .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumHyd_restart.nc'          .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBaccumAtmOcn_restart.nc'       .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBAtm_a_restart.tile1.nc'       .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBAtm_a_restart.tile2.nc'       .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBAtm_a_restart.tile3.nc'       .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBAtm_a_restart.tile4.nc'       .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBAtm_a_restart.tile5.nc'       .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBAtm_a_restart.tile6.nc'       .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBIce_i_restart.nc'             .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBOcn_o_restart.nc'             .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBLnd_l_restart.nc'             .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBHyd_h_restart.nc'             .bitcmp. "@[CNTL]/RESTART/"
-        'mediator_FBAtmOcn_o_restart.nc'          .bitcmp. "@[CNTL]/RESTART/"
+# 'ufs.s2s.c384_t025.jan.jul02.cpl.r.2016-10-03-03600.nc' .bitcmp. "@[CNTL]/RESTART/"
+#
       # Executable validation.  This makes an MD5 sum of the fv3.exe
       # for comparison against the MD5 sum made in the build job.
       # This is to ensure the executable did not change during the
       # test suite.
         "@[build%target]" .md5cmp. "@[fv3_mom6_cice.exe%md5sum]" 
     } 
- 
     spawn execute { 
         # Run: ATM/MED with threads and OCN/ICE with all pets/node
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
