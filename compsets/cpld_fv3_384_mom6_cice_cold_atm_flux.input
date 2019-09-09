@@ -189,14 +189,14 @@ test cpld_fv3_384_mom6_cice_cold_atm_flux: fv3_mom6_cice.exe {
        'RESTART/phy_data.tile5.nc'           .bitcmp. "@[CNTL]/RESTART/"
        'RESTART/phy_data.tile6.nc'           .bitcmp. "@[CNTL]/RESTART/"
 #
-       'MOM6_RESTART/MOM.res.nc'             .bitcmp. "@[CNTL]/RESTART/"
-       'MOM6_RESTART/MOM.res_1.nc'           .bitcmp. "@[CNTL]/RESTART/"
-       'MOM6_RESTART/MOM.res_2.nc'           .bitcmp. "@[CNTL]/RESTART/"
-       'MOM6_RESTART/MOM.res_3.nc'           .bitcmp. "@[CNTL]/RESTART/"
-       'MOM6_RESTART/MOM.res_4.nc'           .bitcmp. "@[CNTL]/RESTART/"
-       'restart/iced.2016-10-03-03600.nc'    .bitcmp. "@[CNTL]/RESTART/"
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00_1.nc'           .bitcmp. "@[CNTL]/RESTART/"
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00_2.nc'           .bitcmp. "@[CNTL]/RESTART/"
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00_3.nc'           .bitcmp. "@[CNTL]/RESTART/"
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00_4.nc'           .bitcmp. "@[CNTL]/RESTART/"
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00.nc'             .bitcmp. "@[CNTL]/RESTART/"
+       'restart/iced.2016-10-03-03600.nc'                           .bitcmp. "@[CNTL]/RESTART/"
 #
-       'ufs.s2s.c384_t025.jan.jul02.cpl.r.2016-10-03-03600.nc' .bitcmp. "@[CNTLMED]/"
+       'ufs.s2s.c384_t025.jan.jul02.cpl.r.2016-10-03-03600.nc'      .bitcmp. "@[CNTLMED]/"
 
       # Executable validation.  This makes an MD5 sum of the fv3.exe
       # for comparison against the MD5 sum made in the build job.

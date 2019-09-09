@@ -1,0 +1,5 @@
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00_1.nc'           .bitcmp. "@[CNTL]/RESTART/"
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00_2.nc'           .bitcmp. "@[CNTL]/RESTART/"
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00_3.nc'           .bitcmp. "@[CNTL]/RESTART/"
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00_4.nc'           .bitcmp. "@[CNTL]/RESTART/"
+       'MOM6_RESTART/ocn.mom6.r.2016-10-03-01-00-00.nc'             .bitcmp. "@[CNTL]/RESTART/"
