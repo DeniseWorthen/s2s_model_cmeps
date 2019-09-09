@@ -518,9 +518,58 @@ test cpld_fv3_384_mom6_cice_warm_bm2_nems: fv3_mom6_cice_nems.exe {
  
     build=fv3_mom6_cice_nems.exe 
  
+    # For non-baseline mediator restarts
+    RESTART_DIR="/scratch4/NCEPDEV/stmp3/Denise.Worthen/NEMS/cold_@[CDATE]/tmp/cpld_fv3_384_mom6_cice_cold_bm2_nems"
+    
     prep=fv3_prep( 
         RUNDIR="@[RUNDIR]",modules="@[fv3_mom6_cice_nems.exe%modules.nems]", 
         CNTL="@[CNTL]") 
+
+    # Specify input files. 
+    filters input { 
+      #    WORK FILE  <=filter=   SOURCE FILE 
+                  'input.nml'  <=atparse=  "@[PARMnems]/input.bm2.nml.IN" 
+            'model_configure'  <=atparse=  "@[PARMnems]/model_configure.IN" 
+                    'fd.yaml'  <=copy=     "@[PARMnems]/fd.yaml"
+                     'pio_in'  <=copy=     "@[PARMnems]/pio_in"
+                'aerosol.dat'  <=copyfrom= "@[FV3_input_data]/INPUT" 
+     'sfc_emissivity_idx.txt'  <=copyfrom= "@[FV3_input_data]/INPUT" 
+  'solarconstant_noaa_an.txt'  <=copyfrom= "@[FV3_input_data]/INPUT" 
+                       '*grb'  <=copyfrom= "@[FV3_input_data]" 
+                    '*_table'  <=copyfrom= "@[FV3_input_data]" 
+                 '*configure'  <=copyfrom= "@[FV3_input_data]"
+# only some nc files are needed; remainder copied below from bm2 area 
+         'INPUT/C384_grid*nc'  <=copyfrom= "@[FV3_input_data]/INPUT"
+          'INPUT/oro_data*nc'  <=copyfrom= "@[FV3_input_data]/INPUT"
+       'INPUT/C384_mosaic.nc'  <=copy=     "@[FV3_input_data]/INPUT/grid_spec.nc"
+             'nems.configure'  <=atparse=  "@[PARMnems]/nems.configure.@[nems_configure].IN" 
+# this will copy a MOM_input_template which will be edited in the prerun==>MOM_input
+                    'INPUT/*'  <=copyfrom= "@[UGCS_input_data]/MOM6_FIX_025deg"
+         'INPUT/grid_spec.nc'  <=copy=     "@[UGCS_input_data]/COUPLED384/grid_spec.nc"
+    'grid_cice_NEMS_mx025.nc'  <=copy=     "@[UGCS_input_data]/CICE/grid_cice_NEMS_mx025.nc"
+    'kmtu_cice_NEMS_mx025.nc'  <=copy=     "@[UGCS_input_data]/CICE/kmtu_cice_NEMS_mx025.nc"
+# the ice_in created in pre-run sets a generic name for the restart file
+         'cice5_model.res.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/cice5_model_0.25.res_@[CDATE].nc"
+# the ice_in_template will be edited in the prerun==>ice_in
+            'ice_in_template'  <=copy=     "@[UGCS_input_data]/CICE/ice_in_template"
+# the diag_table_template will be edited in the prerun==>diag_table
+        'diag_table_template'  <=copy=     "@[UGCS_input_data]/COUPLED384/diag_table_template"
+# copy over ICs from DA
+         'INPUT/MOM.res_1.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res_1.nc"
+         'INPUT/MOM.res_2.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res_2.nc"
+         'INPUT/MOM.res_3.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res_3.nc"
+         'INPUT/MOM.res_4.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res_4.nc"
+           'INPUT/MOM.res.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res.nc"
+# and the FV3 initial conditions and updated input 
+        'global_o3prdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77"
+ 'co2historicaldata_201*.txt'  <=copyfrom= "@[UGCS_input_data]/FV3_input_bm2/INPUT"
+                'field_table'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/field_table"
+       'global_h2oprdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/global_h2oprdlos.f77"
+# copy over ICs for FV3 at this date
+                 'INPUT/*.nc'  <=copyfrom= "@[Bin_input_data]/@[CDATE]/gfs/C384/INPUT"
+# mediator restarts from RESTART_DIR
+                  'mediator*'  <=copyfrom= "@[RESTART_DIR]"
+    } 
 
     spawn execute { 
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
