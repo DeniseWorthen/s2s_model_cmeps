@@ -491,3 +491,38 @@ test cpld_fv3_384_mom6_cice_2d_atm_flux_nems: fv3_mom6_cice_nems.exe {
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
     } 
 } 
+######################################################################## 
+
+test cpld_fv3_384_mom6_cice_cold_bm2_nems: fv3_mom6_cice_nems.exe { 
+    use cpld_fv3_384_mom6_cice_cold_bm2
+
+    MEDIATOR='nems'
+ 
+    build=fv3_mom6_cice_nems.exe 
+ 
+    prep=fv3_prep( 
+        RUNDIR="@[RUNDIR]",modules="@[fv3_mom6_cice_nems.exe%modules.nems]", 
+        CNTL="@[CNTL]") 
+
+    spawn execute { 
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
+    } 
+} 
+
+######################################################################## 
+
+test cpld_fv3_384_mom6_cice_warm_bm2_nems: fv3_mom6_cice_nems.exe { 
+    use cpld_fv3_384_mom6_cice_warm_bm2
+
+    MEDIATOR='nems'
+ 
+    build=fv3_mom6_cice_nems.exe 
+ 
+    prep=fv3_prep( 
+        RUNDIR="@[RUNDIR]",modules="@[fv3_mom6_cice_nems.exe%modules.nems]", 
+        CNTL="@[CNTL]") 
+
+    spawn execute { 
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
+    } 
+} 

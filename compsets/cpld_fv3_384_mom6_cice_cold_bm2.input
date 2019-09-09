@@ -1,32 +1,19 @@
 ########################################################################
 
-test cpld_fv3_384_mom6_cice_2d_bm2: fv3_mom6_cice.exe { 
+test cpld_fv3_384_mom6_cice_cold_bm2: fv3_mom6_cice.exe { 
     use plat 
     use plat%default_resources 
     use fv3_defaults 
     use cpl_defaults
+
+    TEST_DESCR="Fully coupled FV3-MOM6-CICE system - cold 384, slow/fast coupling" 
+    CNTL_NAME='RT-Baselines_cold384' 
  
-    TEST_DESCR="Fully coupled FV3-MOM6-CICE system - 2d_warm_c384, slow/fast coupling" 
-    CNTL_NAME="RT-Baselines_2d_warm384_@[MEDIATOR]"
- 
-    DAYS='2'
-    FHMAX='48'
-    #walltime=14400   # seconds
-#   For a 30 day run: 
-#     DAYS='30'
-#     FHMAX='720'
-#     walltime=28800   # seconds
-    #no high freq fv3 output
-    NFHMAX_HF='-1'
-    NFHOUT_HF='-1'
-    FDIAG='6' 
+    DAYS='0.041666666'
+    FHMAX='1' #Note this needs to be at least 2x CPL_SLOW
     DT_ATMOS='450'
     NPX='385'
     NPY='385'
-    WRITE_GROUP=3
-    WRTTASK_PER_GROUP=24
-    INPES=4
-    JNPES=8
     IMO='1536'
     JMO='768'
     FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
@@ -34,13 +21,17 @@ test cpld_fv3_384_mom6_cice_2d_bm2: fv3_mom6_cice.exe {
     FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
     FNSMCC="'global_soilmgldas.t766.1536.768.grb',"
     FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area 
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area 
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area 
-
+    
     FV3_input_data="@[plat%INPUTS]/FV3_input_data384" 
     UGCS_input_data="@[plat%INPUTS]" 
- 
+
+    # Test model date
+    Bin_input_data="/scratch4/NCEPDEV/nems/noscrub/Bin.Li/FROM_HPSS"
+
     build=fv3_mom6_cice.exe 
  
     prep=fv3_prep( 
@@ -64,8 +55,8 @@ test cpld_fv3_384_mom6_cice_2d_bm2: fv3_mom6_cice.exe {
          CPL_FAST="@[DT_ATMOS]"
 
     # - set date YYYYMMDDHH
-     SYEAR='2011'
-    SMONTH='09'
+     SYEAR='2012'
+    SMONTH='07'
       SDAY='01'
      SHOUR='00'
      CDATE="@[SYEAR]@[SMONTH]@[SDAY]@[SHOUR]"
@@ -73,15 +64,15 @@ test cpld_fv3_384_mom6_cice_2d_bm2: fv3_mom6_cice.exe {
     # write a CICE restart at FHMAX
     DUMPFREQ_N="@[FHMAX]"
       DUMPFREQ='h'
-    
+
     # - set initialization type for MOM6 (../parm/input.mom6.nml.IN)
     MOM6_RESTART_SETTING = 'r'
-  
+
     # include frazil FW and salt in fluxes sent to ocean
     # FRAZIL_FWSALT='.true.'
-    
+
     # - nems.configure --- 
-    nems_configure="@[MEDIATOR].med_atm_ocn_ice"
+    nems_configure="@[MEDIATOR].medcold_atm_ocn_ice"
     med_model='nems' 
     med_petlist_bounds="0 311"
     atm_model='fv3'
@@ -92,23 +83,25 @@ test cpld_fv3_384_mom6_cice_2d_bm2: fv3_mom6_cice.exe {
     ice_petlist_bounds="432 479"
     coupling_interval_slow_sec="@[CPL_SLOW]"
     coupling_interval_fast_sec="@[CPL_FAST]"
- 
+    ATMTASKS='312'
+    OTASKS='168'
+
     # Specify input files. 
     filters input { 
       #    WORK FILE  <=filter=   SOURCE FILE 
                   'input.nml'  <=atparse=  "@[PARMnems]/input.bm2.nml.IN" 
+            'model_configure'  <=atparse=  "@[PARMnems]/model_configure.IN" 
                     'fd.yaml'  <=copy=     "@[PARMnems]/fd.yaml"
                      'pio_in'  <=copy=     "@[PARMnems]/pio_in"
-            'model_configure'  <=atparse=  "@[PARMnems]/model_configure.IN" 
                 'aerosol.dat'  <=copyfrom= "@[FV3_input_data]/INPUT" 
- 'co2historicaldata_201*.txt'  <=copyfrom= "@[FV3_input_data]/INPUT" 
-        'global_o3prdlos.f77'  <=copyfrom= "@[FV3_input_data]/INPUT" 
      'sfc_emissivity_idx.txt'  <=copyfrom= "@[FV3_input_data]/INPUT" 
   'solarconstant_noaa_an.txt'  <=copyfrom= "@[FV3_input_data]/INPUT" 
                        '*grb'  <=copyfrom= "@[FV3_input_data]" 
                     '*_table'  <=copyfrom= "@[FV3_input_data]" 
-                 '*configure'  <=copyfrom= "@[FV3_input_data]" 
-                      'INPUT'  <=copy=     "@[FV3_input_data]/INPUT" 
+                 '*configure'  <=copyfrom= "@[FV3_input_data]"
+# only some nc files are needed; remainder copied below from bm2 area 
+         'INPUT/C384_grid*nc'  <=copyfrom= "@[FV3_input_data]/INPUT" 
+          'INPUT/oro_data*nc'  <=copyfrom= "@[FV3_input_data]/INPUT"
        'INPUT/C384_mosaic.nc'  <=copy=     "@[FV3_input_data]/INPUT/grid_spec.nc"
              'nems.configure'  <=atparse=  "@[PARMnems]/nems.configure.@[nems_configure].IN" 
 # this will copy a MOM_input_template which will be edited in the prerun==>MOM_input
@@ -117,24 +110,26 @@ test cpld_fv3_384_mom6_cice_2d_bm2: fv3_mom6_cice.exe {
     'grid_cice_NEMS_mx025.nc'  <=copy=     "@[UGCS_input_data]/CICE/grid_cice_NEMS_mx025.nc"
     'kmtu_cice_NEMS_mx025.nc'  <=copy=     "@[UGCS_input_data]/CICE/kmtu_cice_NEMS_mx025.nc"
 # the ice_in created in pre-run sets a generic name for the restart file
-         'cice5_model.res.nc'  <=copy=     "@[UGCS_input_data]/CICE/cice5_model_0.25.res_@[CDATE].nc"
+         'cice5_model.res.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/cice5_model_0.25.res_@[CDATE].nc"
 # the ice_in_template will be edited in the prerun==>ice_in
             'ice_in_template'  <=copy=     "@[UGCS_input_data]/CICE/ice_in_template"
 # the diag_table_template will be edited in the prerun==>diag_table
         'diag_table_template'  <=copy=     "@[UGCS_input_data]/COUPLED384/diag_table_template"
-                          '*'  <=copyfrom= "@[UGCS_input_data]/MEDIATOR384_@[MEDIATOR]_@[CDATE]"
 # copy over ICs from DA
-         'INPUT/MOM.res_1.nc'  <=copy=     "@[UGCS_input_data]/MOM6_IC/MOM.res_1.@[CDATE].nc"
-         'INPUT/MOM.res_2.nc'  <=copy=     "@[UGCS_input_data]/MOM6_IC/MOM.res_2.@[CDATE].nc"
-         'INPUT/MOM.res_3.nc'  <=copy=     "@[UGCS_input_data]/MOM6_IC/MOM.res_3.@[CDATE].nc"
-         'INPUT/MOM.res_4.nc'  <=copy=     "@[UGCS_input_data]/MOM6_IC/MOM.res_4.@[CDATE].nc"
-           'INPUT/MOM.res.nc'  <=copy=     "@[UGCS_input_data]/MOM6_IC/MOM.res.@[CDATE].nc"
+         'INPUT/MOM.res_1.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res_1.nc"
+         'INPUT/MOM.res_2.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res_2.nc"
+         'INPUT/MOM.res_3.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res_3.nc"
+         'INPUT/MOM.res_4.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res_4.nc"
+           'INPUT/MOM.res.nc'  <=copy=     "@[Bin_input_data]/@[CDATE]/mom6_da/MOM.res.nc"
 # and the FV3 initial conditions and updated input 
-                    'INPUT/*'  <=copyfrom= "@[UGCS_input_data]/FV3_input_bm2/INPUT"
+        'global_o3prdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77"
+ 'co2historicaldata_201*.txt'  <=copyfrom= "@[UGCS_input_data]/FV3_input_bm2/INPUT"
                 'field_table'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/field_table"
        'global_h2oprdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/global_h2oprdlos.f77"
+# copy over ICs for FV3 at this date
+                 'INPUT/*.nc'  <=copyfrom= "@[Bin_input_data]/@[CDATE]/gfs/C384/INPUT"
     } 
-
+ 
     # Edit the templates for the compset parameters
     prerun=edit_inputs(CDATE="@[CDATE]",
                      DT_CICE="@[DT_CICE]",
@@ -151,15 +146,14 @@ test cpld_fv3_384_mom6_cice_2d_bm2: fv3_mom6_cice.exe {
     # Specify output files:
     criteria output {
         # WORKFILE                            .comparison. TARGET
-
       # Executable validation.  This makes an MD5 sum of the fv3.exe
       # for comparison against the MD5 sum made in the build job.
       # This is to ensure the executable did not change during the
       # test suite.
         "@[build%target]" .md5cmp. "@[fv3_mom6_cice.exe%md5sum]" 
-    } 
- 
+    }
+
     spawn execute { 
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
     } 
-}
+} 
