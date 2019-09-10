@@ -569,7 +569,8 @@ test cpld_fv3_384_mom6_cice_warm_bm2_nems: fv3_mom6_cice_nems.exe {
                  'INPUT/*.nc'  <=copyfrom= "@[Bin_input_data]/@[CDATE]/gfs/C384/INPUT"
 # mediator restarts from RESTART_DIR, nems case
                   'mediator*'  <=copyfrom= "@[RESTART_DIR]"
-    } 
+    }
+ 
     spawn execute { 
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
     } 
