@@ -79,8 +79,10 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
      CDATE="@[SYEAR]@[SMONTH]@[SDAY]@[SHOUR]"
 
     # For non-baseline mediator restarts
-    RESTART_DIR="/scratch4/NCEPDEV/stmp3/Denise.Worthen/CMEPS/cold_@[CDATE]/tmp/cpld_fv3_384_mom6_cice_cold_bm2"
-    
+    RESTART_DIR="/scratch4/NCEPDEV/stmp3/Denise.Worthen/CMEPS/@[CDATE]_cold/tmp/cpld_fv3_384_mom6_cice_cold_bm2"
+    # For ufs restarts, 1hr cold
+    RESTART_MED="ufs.s2s.c384_t025.jan.jul02.cpl.r.@[SYEAR]-@[SMONTH]-@[SDAY]-03600.nc"
+
     # write a CICE restart at DAYS
     DUMPFREQ_N="@[DAYS]"
       DUMPFREQ='d'
@@ -148,9 +150,9 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
        'global_h2oprdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/global_h2oprdlos.f77"
 # copy over ICs for FV3 at this date
                  'INPUT/*.nc'  <=copyfrom= "@[Bin_input_data]/@[CDATE]/gfs/C384/INPUT"
-# mediator restarts from RESTART_DIR
-  'ufs.s2s.c384_t025.jan.jul02.cpl.r.2012-07-01-03600.nc'  <=copyfrom= "@[RESTART_DIR]"
-                                           'rpointer.med'  <=copyfrom= "@[RESTART_DIR]"
+# mediator restarts from RESTART_DIR, cmeps case
+             "@[RESTART_MED]"  <=copy=     "@[RESTART_DIR]/@[RESTART_MED]"
+               'rpointer.med'  <=copy=     "@[RESTART_DIR]/rpointer.med"
     } 
 
     # Edit the templates for the compset parameters

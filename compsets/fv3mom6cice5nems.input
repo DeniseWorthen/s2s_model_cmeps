@@ -519,7 +519,7 @@ test cpld_fv3_384_mom6_cice_warm_bm2_nems: fv3_mom6_cice_nems.exe {
     build=fv3_mom6_cice_nems.exe 
  
     # For non-baseline mediator restarts
-    RESTART_DIR="/scratch4/NCEPDEV/stmp3/Denise.Worthen/NEMS/cold_@[CDATE]/tmp/cpld_fv3_384_mom6_cice_cold_bm2_nems"
+    RESTART_DIR="/scratch4/NCEPDEV/stmp3/Denise.Worthen/NEMS/@[CDATE]_cold/tmp/cpld_fv3_384_mom6_cice_cold_bm2_nems"
     
     prep=fv3_prep( 
         RUNDIR="@[RUNDIR]",modules="@[fv3_mom6_cice_nems.exe%modules.nems]", 
@@ -567,10 +567,9 @@ test cpld_fv3_384_mom6_cice_warm_bm2_nems: fv3_mom6_cice_nems.exe {
        'global_h2oprdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/global_h2oprdlos.f77"
 # copy over ICs for FV3 at this date
                  'INPUT/*.nc'  <=copyfrom= "@[Bin_input_data]/@[CDATE]/gfs/C384/INPUT"
-# mediator restarts from RESTART_DIR
+# mediator restarts from RESTART_DIR, nems case
                   'mediator*'  <=copyfrom= "@[RESTART_DIR]"
     } 
-
     spawn execute { 
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
     } 

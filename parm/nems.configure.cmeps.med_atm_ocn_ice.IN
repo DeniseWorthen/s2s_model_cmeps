@@ -301,7 +301,7 @@ CLOCK_attributes::
       pause_option = never
       ref_tod = 0
       ref_ymd = 0
-      restart_n = 2
+      restart_n = @[DAYS]
       restart_option = ndays
       restart_ymd = -999
       rof_cpl_dt = 1800
