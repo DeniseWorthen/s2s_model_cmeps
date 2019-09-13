@@ -1,5 +1,4 @@
 load 'fv3mom6cice5.input'
-load 'fv3mom6cice5cmeps.input'
 load 'fv3mom6cice5nems.input'
 
 #run cpld_fv3_mom6_cice_cold_atm_flux @ fv3, coupledapp, cold

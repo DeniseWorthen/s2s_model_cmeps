@@ -9,12 +9,12 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
     TEST_DESCR="Fully coupled FV3-MOM6-CICE system - 2d_warm_c384, slow/fast coupling" 
     CNTL_NAME='RT-Baselines_2d_warm384' 
  
-    #DAYS='.75'
-    #FHMAX='18'
-    DAYS='20'
-    FHMAX='480'
-    walltime=28800   # seconds
-    test_size='long'
+    DAYS='1'
+    FHMAX='24'
+    #DAYS='20'
+    #FHMAX='480'
+    #walltime=28800   # seconds
+    #test_size='long'
 
     #walltime=14400   # seconds
 #   For a 30 day run: 
