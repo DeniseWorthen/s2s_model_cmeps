@@ -90,6 +90,7 @@ test cpld_fv3_384_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe {
             'model_configure'  <=atparse=  "@[PARMnems]/model_configure.IN"
                     'fd.yaml'  <=copy=     "@[PARMnems]/fd.yaml"
                      'pio_in'  <=copy=     "@[PARMnems]/pio_in"
+            'med_modelio.nml'  <=copy=     "@[PARMnems]/med_modelio.nml"
                 'aerosol.dat'  <=copyfrom= "@[FV3_input_data]/INPUT"
  'co2historicaldata_201*.txt'  <=copyfrom= "@[FV3_input_data]/INPUT"
         'global_o3prdlos.f77'  <=copyfrom= "@[FV3_input_data]/INPUT"
