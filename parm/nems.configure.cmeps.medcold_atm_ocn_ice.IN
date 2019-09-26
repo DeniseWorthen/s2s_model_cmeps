@@ -24,7 +24,7 @@ ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_attributes::
   Verbosity = 0
-  DumpFields = true
+  DumpFields = false
   ProfileMemory = false
 ::
 
@@ -33,7 +33,7 @@ OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
 OCN_attributes::
   Verbosity = 0
-  DumpFields = true
+  DumpFields = false
   ProfileMemory = false
 ::
 
@@ -42,7 +42,7 @@ ICE_model:                      @[ice_model]
 ICE_petlist_bounds:             @[ice_petlist_bounds]
 ICE_attributes::
   Verbosity = 0
-  DumpFields = true
+  DumpFields = false
   ProfileMemory = false
 ::
 
@@ -186,8 +186,8 @@ ALLCOMP_attributes::
       flds_co2c = .false.
       flds_i2o_per_cat = .false.
       flds_wiso = .false.
-      flux_convergence = 0.01
-      flux_max_iteration = 5
+      flux_convergence = 0.0
+      flux_max_iteration = 1
       glc_nec = 10
       hostname = theia
       ice_ncat = 5
