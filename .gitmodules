@@ -2,6 +2,9 @@
 	path = FV3
 	url = gerrit:FV3
 	branch = cmeps_integration
+[submodule "stochastic_physics"]
+        path = stochastic_physics
+        url = https://github.com/noaa-psd/stochastic_physics
 [submodule "NEMS"]
 	path = NEMS
 	url = gerrit:NEMS
@@ -19,5 +22,5 @@
 	url = git://github.com/NOAA-EMC/FMS
 [submodule "CMEPS"]
 	path = CMEPS
-	url = https://github.com/ESCOMP/CMEPS.git
+	url = https://github.com/DeniseWorthen/CMEPS.git
 	branch = nems_integration

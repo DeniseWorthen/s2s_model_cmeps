@@ -31,7 +31,9 @@ test cpld_fv3_384_mom6_cice_cold_bm2: fv3_mom6_cice.exe {
 
     # Test model date
     Bin_input_data="/scratch4/NCEPDEV/nems/noscrub/Bin.Li/FROM_HPSS"
-
+    # Nems input directory
+    NEMS_input_data="/scratch4/NCEPDEV/ocean/save/Denise.Worthen/NEMS_INPUT0.1/"
+    
     build=fv3_mom6_cice.exe 
  
     prep=fv3_prep( 
@@ -129,6 +131,11 @@ test cpld_fv3_384_mom6_cice_cold_bm2: fv3_mom6_cice.exe {
        'global_h2oprdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/global_h2oprdlos.f77"
 # copy over ICs for FV3 at this date
                  'INPUT/*.nc'  <=copyfrom= "@[Bin_input_data]/@[CDATE]/gfs/C384/INPUT"
+# turn off runoff w/ empty datatable
+   'INPUT/data_table'          <=copy=     "@[NEMS_input_data]/mom6_data/data_table_empty"
+# add runoff datatable and input
+#   'INPUT/data_table'          <=copy=     "@[NEMS_input_data]/mom6_data/data_table"
+#   'INPUT/runoff.daitren.clim.1440x1080.v20180328.nc' <=copy=     "@[NEMS_input_data]/mom6_data/runoff.daitren.clim.1440x1080.v20180328.nc"
     } 
  
     # Edit the templates for the compset parameters
