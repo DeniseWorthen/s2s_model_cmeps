@@ -569,6 +569,8 @@ test cpld_fv3_384_mom6_cice_warm_bm2_nems: fv3_mom6_cice_nems.exe {
                  'INPUT/*.nc'  <=copyfrom= "@[Bin_input_data]/@[CDATE]/gfs/C384/INPUT"
 # mediator restarts from RESTART_DIR, nems case
                   'mediator*'  <=copyfrom= "@[RESTART_DIR]"
+# for updated MOM6, require template change
+   'INPUT/MOM_input_template'  <=copy=     "@[NEMS_input_data]/mom6_data/MOM_input_template"
 # turn off runoff w/ empty datatable
   'INPUT/data_table'          <=copy=     "@[NEMS_input_data]/mom6_data/data_table_empty"
 # add runoff datatable and input
