@@ -1,26 +1,26 @@
 [submodule "FV3"]
 	path = FV3
 	url = gerrit:FV3
-	branch = cmeps_integration
+	branch = cmeps_integration_jun10
 [submodule "stochastic_physics"]
         path = stochastic_physics
         url = https://github.com/noaa-psd/stochastic_physics
 [submodule "NEMS"]
 	path = NEMS
 	url = gerrit:NEMS
-	branch = cmeps_integration
+	branch = cmeps_integration_update
 [submodule "CICE_SRC"]
 	path = CICE_SRC
 	url = gerrit:EMC_CICE
-	branch = cmeps_integration
+	branch = cmeps_integration_update
 [submodule "MOM6"]
 	path = MOM6
 	url = https://github.com/EMC-MOM6/NEMS-MOM6-FMS
-	branch = cmeps_integration
+	branch = cmeps_integration_update
 [submodule "FMS"]
 	path = FMS
 	url = git://github.com/NOAA-EMC/FMS
 [submodule "CMEPS"]
 	path = CMEPS
 	url = https://github.com/DeniseWorthen/CMEPS.git
-	branch = nems_integration
+	branch = feature/separate_fluxes
