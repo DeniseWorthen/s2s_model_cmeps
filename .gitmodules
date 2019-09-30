@@ -7,8 +7,8 @@
         url = https://github.com/noaa-psd/stochastic_physics
 [submodule "NEMS"]
 	path = NEMS
-	url = gerrit:NEMS
-	branch = cmeps_integration_update
+	url = https://github.com/DeniseWorthen/NEMS.git
+	branch = feature/cmeps_integration
 [submodule "CICE_SRC"]
 	path = CICE_SRC
 	url = gerrit:EMC_CICE
