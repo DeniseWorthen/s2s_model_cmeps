@@ -16,6 +16,8 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
         module use $( dirname $modules )
         module load $( basename $modules )
 
+        @[plat%execution_time_modules]
+
         mkdir RESTART INPUT 
         #For MOM6
         mkdir MOM6_RESTART MOM6_OUTPUT
