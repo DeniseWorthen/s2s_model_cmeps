@@ -27,8 +27,8 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
         export OMP_STACKSIZE=512M
         export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 
-        ##To run Cupid, comment out the above ESMF_RUNTIME_COMPLIANCECHECK and 
-        ##uncomment the two rows below
+        #To run Cupid, comment out the above ESMF_RUNTIME_COMPLIANCECHECK and 
+        #uncomment the two rows below
         #export ESMF_RUNTIME_COMPLIANCECHECK=OFF # removed depth=4
         #export ESMF_RUNTIME_TRACE=ON # added this
 
@@ -48,7 +48,10 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
 
 build fv3_mom6_cice.exe { 
     # Use NEMSAppBuilder to build a coupled app.   
-    use plat 
+    use plat
+    # Note:
+    #  plat%EXECrt = temporary directory for executables and md5 sums
+    #  plat%INCrt  = temporary directory for modulefiles
     target="@[plat%EXECrt]/fv3_mom6_cice.exe" 
     modules.nems="@[plat%INCrt]/modules_fv3_mom6_cice" 
     md5sum="@[target].md5" 
@@ -72,7 +75,7 @@ build fv3_mom6_cice_nems.exe {
 }
 ########################################################################
 
-#NOTE: DO NOT UPDATE the fv3_default variables for coupled fiels, 
+#NOTE: DO NOT UPDATE the fv3_default variables for coupled variables, 
 #update them within the tests themselves.  The fv3_default variables
 #are updated to match the NEMSfv3gfs variables only. Instead, update
 #the cpl_defaults

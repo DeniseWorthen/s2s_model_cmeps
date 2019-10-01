@@ -25,9 +25,10 @@ platform hera.intel {
 
     # INPUTS is the input directory, which should contain fix and parm
     # files, plus any restarts or other inputs.
-
-    BASELINE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190923"
-    BASELINE_TEMPLATE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190923"
+    BASELINE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190627/"
+    BASELINE_TEMPLATE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190627/"
+    #BASELINE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190923"
+    #BASELINE_TEMPLATE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190923"
     INPUTS="@[BASELINE]"
 
     default_resources={
@@ -78,7 +79,7 @@ platform hera.intel {
         log_dir="@[TMPrt]/log"
         scheduler="slurm"
         entities=[[[
-  <!ENTITY SHORTQ "batch">
+  <!ENTITY SHORTQ "debug">
   <!ENTITY LONGQ "batch">
   <!ENTITY BUILDQ "batch"> <!-- NOTE: If you change this, you must change the partition too -->
 ]]]

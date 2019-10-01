@@ -30,9 +30,9 @@ test cpld_fv3_384_mom6_cice_cold_bm2: fv3_mom6_cice.exe {
     UGCS_input_data="@[plat%INPUTS]" 
 
     # Test model date
-    Bin_input_data="/scratch4/NCEPDEV/nems/noscrub/Bin.Li/FROM_HPSS"
+    Bin_input_data="/scratch1/NCEPDEV/nems/Bin.Li/S2S/FROM_HPSS"
     # Updated MOM6_input_template req if running w/ updated MOM6 and/or runoff
-    NEMS_input_data="/scratch4/NCEPDEV/ocean/save/Denise.Worthen/NEMS_INPUT0.1/"
+    NEMS_input_data="/scratch2/NCEPDEV/ocean/Denise.Worthen/NEMS_INPUT0.1/"
     
     build=fv3_mom6_cice.exe 
  
