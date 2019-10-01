@@ -8,11 +8,11 @@
 [submodule "NEMS"]
 	path = NEMS
 	url = https://github.com/DeniseWorthen/NEMS.git
-	branch = feature/cmeps_integration
+	branch = cmeps_integration
 [submodule "CICE_SRC"]
 	path = CICE_SRC
-	url = gerrit:EMC_CICE
-	branch = cmeps_integration_update
+	url = https://github.com/DeniseWorthen/CICE5.git
+	branch = cmeps_integration
 [submodule "MOM6"]
 	path = MOM6
 	url = https://github.com/EMC-MOM6/NEMS-MOM6-FMS
