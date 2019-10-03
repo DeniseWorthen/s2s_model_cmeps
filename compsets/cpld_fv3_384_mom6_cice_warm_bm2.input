@@ -9,10 +9,10 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
     TEST_DESCR="Fully coupled FV3-MOM6-CICE system - 2d_warm_c384, slow/fast coupling" 
     CNTL_NAME='RT-Baselines_2d_warm384' 
  
-    #DAYS='1'
-    #FHMAX='24'
-    DAYS='20'
-    FHMAX='480'
+    DAYS='2'
+    FHMAX='48'
+    #DAYS='20'
+    #FHMAX='480'
     walltime=28800   # seconds
     test_size='long'
 
@@ -46,13 +46,16 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
     #output FV3 at every timestep
     #NSOUT=1
 
+    #write out gaussian grid instead of tiles
+    #OUTPUT_GRID="'gaussian_grid'"
+
     FV3_input_data="@[plat%INPUTS]/FV3_input_data384" 
     UGCS_input_data="@[plat%INPUTS]" 
 
     # Test model date
     Bin_input_data="/scratch1/NCEPDEV/nems/Bin.Li/S2S/FROM_HPSS"
     # Updated MOM6_input_template req if running w/ updated MOM6 and/or runoff 
-    NEMS_input_data="/scratch4/NCEPDEV/ocean/save/Denise.Worthen/NEMS_INPUT0.1/"
+    NEMS_input_data="/scratch2/NCEPDEV/ocean/Denise.Worthen/NEMS_INPUT0.1/"
     
     build=fv3_mom6_cice.exe 
  
@@ -66,10 +69,11 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
     WRTTASK_PER_GROUP=24
     INPES=6
     JNPES=8
-    #THRD=2
+    THRD=2
     #TPN=12
-    THRD=3
-    TPN=8
+    TPN=20
+    #THRD=3
+    #TPN=8
  
     # - set component and coupling timesteps
           DT_CICE="@[DT_ATMOS]"
@@ -86,7 +90,7 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
      CDATE="@[SYEAR]@[SMONTH]@[SDAY]@[SHOUR]"
 
     # For non-baseline mediator restarts
-    RESTART_DIR="/scratch4/NCEPDEV/stmp3/Denise.Worthen/CMEPS_new/@[CDATE]_cold/tmp/cpld_fv3_384_mom6_cice_cold_bm2"
+    RESTART_DIR="/scratch2/NCEPDEV/stmp1/Denise.Worthen/CMEPS_hera/@[CDATE]_cold/tmp/cpld_fv3_384_mom6_cice_cold_bm2"
     # For ufs restarts, 1hr cold
     RESTART_MED="ufs.s2s.c384_t025.jan.jul02.cpl.r.@[SYEAR]-@[SMONTH]-@[SDAY]-03600.nc"
 

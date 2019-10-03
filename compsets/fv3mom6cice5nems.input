@@ -519,7 +519,7 @@ test cpld_fv3_384_mom6_cice_warm_bm2_nems: fv3_mom6_cice_nems.exe {
     build=fv3_mom6_cice_nems.exe 
  
     # For non-baseline mediator restarts
-    RESTART_DIR="/scratch4/NCEPDEV/stmp3/Denise.Worthen/NEMS/@[CDATE]_cold/tmp/cpld_fv3_384_mom6_cice_cold_bm2_nems"
+    RESTART_DIR="/scratch2/NCEPDEV/stmp1/Denise.Worthen/NEMS_hera/@[CDATE]_cold/tmp/cpld_fv3_384_mom6_cice_cold_bm2_nems"
     
     prep=fv3_prep( 
         RUNDIR="@[RUNDIR]",modules="@[fv3_mom6_cice_nems.exe%modules.nems]", 
