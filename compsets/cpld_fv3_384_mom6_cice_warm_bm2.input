@@ -45,6 +45,9 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
 
     #output FV3 at every timestep
     #NSOUT=1
+    
+    #to use instantaneous ice_in file
+    #ICE_IN_TEMPLATE_NAME="ice_in_template_hfout"
 
     #write out gaussian grid instead of tiles
     #OUTPUT_GRID="'gaussian_grid'"
@@ -55,7 +58,7 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
     # Test model date
     Bin_input_data="/scratch1/NCEPDEV/nems/Bin.Li/S2S/FROM_HPSS"
     # Updated MOM6_input_template req if running w/ updated MOM6 and/or runoff 
-    NEMS_input_data="/scratch2/NCEPDEV/ocean/Denise.Worthen/NEMS_INPUT0.1/"
+    NEMS_input_data="/scratch2/NCEPDEV/stmp1/Denise.Worthen/ForBin/"
     
     build=fv3_mom6_cice.exe 
  
@@ -90,7 +93,7 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
      CDATE="@[SYEAR]@[SMONTH]@[SDAY]@[SHOUR]"
 
     # For non-baseline mediator restarts
-    RESTART_DIR="/scratch2/NCEPDEV/stmp1/Denise.Worthen/CMEPS_hera/@[CDATE]_cold/tmp/cpld_fv3_384_mom6_cice_cold_bm2"
+    RESTART_DIR="/scratch1/NCEPDEV/stmp2/Denise.Worthen/scrub/CMEPS_jun10/@[CDATE]_cold/tmp/cpld_fv3_384_mom6_cice_cold_bm2"
     # For ufs restarts, 1hr cold
     RESTART_MED="ufs.s2s.c384_t025.jan.jul02.cpl.r.@[SYEAR]-@[SMONTH]-@[SDAY]-03600.nc"
 
@@ -123,10 +126,12 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
     filters input { 
       #    WORK FILE  <=filter=   SOURCE FILE 
                   'input.nml'  <=atparse=  "@[PARMnems]/input.bm2.nml.IN" 
+      #            'input.nml'  <=atparse=  "@[PARMnems]/input.mom6.nml.IN" 
             'model_configure'  <=atparse=  "@[PARMnems]/model_configure.IN" 
                     'fd.yaml'  <=copy=     "@[PARMnems]/fd.yaml"
                      'pio_in'  <=copy=     "@[PARMnems]/pio_in"
             'med_modelio.nml'  <=copy=     "@[PARMnems]/med_modelio.nml"
+               'rpointer.med'  <=copy=     "@[PARMnems]/rpointer.med"
                 'aerosol.dat'  <=copyfrom= "@[FV3_input_data]/INPUT" 
      'sfc_emissivity_idx.txt'  <=copyfrom= "@[FV3_input_data]/INPUT" 
   'solarconstant_noaa_an.txt'  <=copyfrom= "@[FV3_input_data]/INPUT" 
@@ -162,18 +167,15 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
        'global_h2oprdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/global_h2oprdlos.f77"
 # copy over ICs for FV3 at this date
                  'INPUT/*.nc'  <=copyfrom= "@[Bin_input_data]/@[CDATE]/gfs/C384/INPUT"
-# mediator restarts from RESTART_DIR, cmeps case
-             "@[RESTART_MED]"  <=copy=     "@[RESTART_DIR]/@[RESTART_MED]"
+# mediator restarts from RESTART_DIR
+             "@[RESTART_MED]"  <=copyfrom= "@[RESTART_DIR]"
+# for cmeps case, the pointer file will contain the actual restart file name
+# for nems, it will be the blank file copied in from PARMnems
                'rpointer.med'  <=copy=     "@[RESTART_DIR]/rpointer.med"
-# for updated MOM6, require template change
-   'INPUT/MOM_input_template'  <=copy=     "@[NEMS_input_data]/mom6_data/MOM_input_template"
 # inst ice output
-#            'ice_in_template'  <=copy=     "/scratch4/NCEPDEV/ocean/save/Denise.Worthen/NEMS_INPUT0.1/cice_data/mx024/ice_in_template_hfout"
+#            'ice_in_template'  <=copy=     "@[NEMS_input_data]/CICE/ice_in_template_hfout"
 # turn off runoff w/ empty datatable
-  'INPUT/data_table'          <=copy=     "@[NEMS_input_data]/mom6_data/data_table_empty"
-# add runoff datatable and input
-#  'INPUT/data_table'          <=copy=     "@[NEMS_input_data]/mom6_data/data_table"
-#  'INPUT/runoff.daitren.clim.1440x1080.v20180328.nc' <=copy=     "@[NEMS_input_data]/mom6_data/runoff.daitren.clim.1440x1080.v20180328.nc"
+           'INPUT/data_table'  <=copy=     "@[NEMS_input_data]/MOM6_FIX_025deg/data_table_empty"
     } 
 
     # Edit the templates for the compset parameters

@@ -24,7 +24,6 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
         #For CICE
         mkdir history restart
 
-
         export MPI_TYPE_DEPTH=20
         export OMP_STACKSIZE=512M
         export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
@@ -165,6 +164,8 @@ cpl_defaults = {
     CPL='.true.'
     NSTF_NAME='0,0,0,0,0'
     MOM6_RESTART_SETTING='n'
+# future use: for MOM6 river runoff 
+#    MOM6_RIVER_RUNOFF='False'
     NPROC_ICE='48'
     DT_ATMOS='900' #needed for C96 cases
     MEDIATOR='cmeps'
@@ -178,6 +179,8 @@ cpl_defaults = {
     FRAZIL_FWSALT='.false.'
 # default setting for runid
     RUNID='unknown'
+# default setting for template name
+    ICE_IN_TEMPLATE_NAME='ice_in_template'
 # for FV3: default values will be changed if doing a warm-warm restart
     WARM_START='.F.'
     MAKE_NH='.T.'

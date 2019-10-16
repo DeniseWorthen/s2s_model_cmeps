@@ -267,7 +267,6 @@
 
 &fv_grid_nml
   grid_file = 'INPUT/grid_spec.nc'
-  
 /
 
 &nam_stochy
