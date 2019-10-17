@@ -165,7 +165,7 @@ cpl_defaults = {
     NSTF_NAME='0,0,0,0,0'
     MOM6_RESTART_SETTING='n'
 # future use: for MOM6 river runoff 
-#    MOM6_RIVER_RUNOFF='False'
+#   MOM6_RIVER_RUNOFF='False'
     NPROC_ICE='48'
     DT_ATMOS='900' #needed for C96 cases
     MEDIATOR='cmeps'
