@@ -9,12 +9,12 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
     TEST_DESCR="Fully coupled FV3-MOM6-CICE system - 2d_warm_c384, slow/fast coupling" 
     CNTL_NAME='RT-Baselines_2d_warm384' 
  
-    DAYS='0.5'
-    FHMAX='12'
-    #DAYS='20'
-    #FHMAX='480'
-    #walltime=28800   # seconds
-    #test_size='long'
+    #DAYS='2'
+    #FHMAX='48'
+    DAYS='20'
+    FHMAX='480'
+    walltime=28800   # seconds
+    test_size='long'
 
     #walltime=14400   # seconds
 #   For a 30 day run: 
@@ -44,7 +44,10 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area 
 
     #output FV3 at every timestep
-    #NSOUT=1
+    #NSOUT='1'
+
+    # 6hour output
+    NFHOUT='6'
 
     #to use instantaneous ice_in file
     #ICE_IN_TEMPLATE_NAME="ice_in_template_hfout"
@@ -173,6 +176,7 @@ test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe {
                'rpointer.med'  <=copy=     "@[RESTART_DIR]/rpointer.med"
 # inst ice output
 #            'ice_in_template'  <=copy=     "@[NEMS_input_data]/CICE/ice_in_template_hfout"
+            'ice_in_template'  <=copy=     "@[NEMS_input_data]/CICE/ice_in_template_noavg"
 # turn off runoff w/ empty datatable
            'INPUT/data_table'  <=copy=     "@[NEMS_input_data]/MOM6_FIX_025deg/data_table_empty"
     } 
