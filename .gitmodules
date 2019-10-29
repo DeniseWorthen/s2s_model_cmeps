@@ -1,6 +1,6 @@
 [submodule "FV3"]
 	path = FV3
-	url = gerrit:FV3
+	url = https://github.com/DeniseWorthen/fv3atm.git
 	branch = cmeps_integration_update
 [submodule "stochastic_physics"]
         path = stochastic_physics
@@ -25,7 +25,8 @@
 	branch = cmeps_integration_update
 [submodule "FMS"]
 	path = FMS
-	url = git://github.com/NOAA-EMC/FMS
+	url = https://github.com/DeniseWorthen/FMS.git
+	branch = feature/bugtracks
 [submodule "CMEPS"]
 	path = CMEPS
 	url = https://github.com/DeniseWorthen/CMEPS.git
