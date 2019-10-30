@@ -179,8 +179,6 @@ cpl_defaults = {
     FRAZIL_FWSALT='.false.'
 # default setting for runid
     RUNID='unknown'
-# default setting for template name
-    ICE_IN_TEMPLATE_NAME='ice_in_template'
 # for FV3: default values will be changed if doing a warm-warm restart
     WARM_START='.F.'
     MAKE_NH='.T.'

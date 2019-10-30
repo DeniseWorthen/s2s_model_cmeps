@@ -19,7 +19,8 @@
 	branch = cmeps_integration_update
 [submodule "FMS"]
 	path = FMS
-	url = git://github.com/NOAA-EMC/FMS
+        url = https://github.com/DeniseWorthen/FMS.git
+        branch = feature/bugtracks
 [submodule "CMEPS"]
 	path = CMEPS
 	url = https://github.com/DeniseWorthen/CMEPS.git
