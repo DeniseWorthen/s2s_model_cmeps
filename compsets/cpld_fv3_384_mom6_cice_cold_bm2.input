@@ -91,8 +91,8 @@ test cpld_fv3_384_mom6_cice_cold_bm2: fv3_mom6_cice.exe {
     # Specify input files. 
     filters input { 
       #    WORK FILE  <=filter=   SOURCE FILE 
-                  'input.nml'  <=atparse=  "@[PARMnems]/input.bm2.nml.IN" 
-      #            'input.nml'  <=atparse=  "@[PARMnems]/input.mom6.nml.IN" 
+      #            'input.nml'  <=atparse=  "@[PARMnems]/input.bm2.nml.IN" 
+                  'input.nml'  <=atparse=  "@[PARMnems]/input.mom6.nml.IN" 
             'model_configure'  <=atparse=  "@[PARMnems]/model_configure.IN" 
                     'fd.yaml'  <=copy=     "@[PARMnems]/fd.yaml"
                      'pio_in'  <=copy=     "@[PARMnems]/pio_in"
@@ -129,7 +129,7 @@ test cpld_fv3_384_mom6_cice_cold_bm2: fv3_mom6_cice.exe {
 # and the FV3 initial conditions and updated input 
         'global_o3prdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77"
  'co2historicaldata_201*.txt'  <=copyfrom= "@[UGCS_input_data]/FV3_input_bm2/INPUT"
-                'field_table'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/field_table"
+#                'field_table'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/field_table"
        'global_h2oprdlos.f77'  <=copy=     "@[UGCS_input_data]/FV3_input_bm2/global_h2oprdlos.f77"
 # copy over ICs for FV3 at this date
                  'INPUT/*.nc'  <=copyfrom= "@[Bin_input_data]/@[CDATE]/gfs/C384/INPUT"
