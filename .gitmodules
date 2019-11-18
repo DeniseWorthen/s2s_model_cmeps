@@ -1,7 +1,7 @@
 [submodule "FV3"]
 	path = FV3
-	url = gerrit:FV3
-	branch = cmeps_integration_jun10
+	url = https://github.com/DeniseWorthen/fv3atm.git
+	branch = cmeps_integration_jun10_on_master
 [submodule "stochastic_physics"]
         path = stochastic_physics
         url = https://github.com/noaa-psd/stochastic_physics
