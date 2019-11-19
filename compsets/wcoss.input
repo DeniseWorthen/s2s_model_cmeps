@@ -17,21 +17,29 @@ platform wcoss.phase2 {
     pex='1'
     cores_per_node=24
     cpus_per_core=2
+
+    # WCOSS Phase 2 has been slow of late.
+    DEFAULT_TEST_WALLTIME=7200
+
     MPI='LSF'
     SHORT_TEST_QUEUE='&SHORTQ;'
     LONG_TEST_QUEUE='&LONGQ;'
     BUILD_QUEUE='&BUILDQ;'
     MACHINE_ID='wcoss.phase2'
-    BASELINE="/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190409"
-    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190409"
+    BASELINE="/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20191106"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20191106"
 
     default_resources={
+        #TPN=8
+        TPN=24
         TASKS=150
-        WRTTASK_PER_GROUP=6
-        TPN=12
         INPES=3
         JNPES=8
         THRD=1
+        WRTTASK_PER_GROUP=6
+        atm_petlist_bounds="0 149"
+#        wav_petlist_bounds="150 263"
+        CPLTASKS=264
     }
     default_stretched_resources={
         TASKS=48
@@ -69,11 +77,16 @@ platform wcoss.phase2 {
     ]]]
 
     # ROCOTO SUPPORT ---------------------------------------------------
+
+    # You MUST reduce the TASK_THROTTLE to 1 if you use a debug queue
+    TASK_THROTTLE='11'
+
     rocoto={
         install_dir="@[HOMErt]"
         log_dir="@[TMPrt]/log"
         scheduler="lsf"
         entities=[[[
+  <!-- You MUST reduce the TASK_THROTTLE to 1 if you use a debug queue -->
   <!ENTITY SHORTQ "dev2">
   <!ENTITY LONGQ "dev2">
   <!ENTITY BUILDQ "dev2_shared">
@@ -109,16 +122,23 @@ platform wcoss.phase1 {
     cores_per_node=16
     cpus_per_core=2
     MACHINE_ID='wcoss.phase1'
-    BASELINE="/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190409"
-    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190409"
+    BASELINE="/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20191025"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20191025"
+
+    # WCOSS Phase 2 has been slow of late.
+    DEFAULT_TEST_WALLTIME=2700
+    BUILD_WALLTIME=3600 # Wallclock limit in seconds for build jobs
 
     default_resources={
-        TASKS=156
-        WRTTASK_PER_GROUP=12
         TPN=8
+        TASKS=150
         INPES=3
         JNPES=8
         THRD=1
+        WRTTASK_PER_GROUP=6
+        atm_petlist_bounds="0 149"
+        wav_petlist_bounds="150 263"
+        CPLTASKS=264
     }
     default_stretched_resources={
         TASKS=48
@@ -185,22 +205,19 @@ platform wcoss_dell_p3 {
     LONG_TEST_QUEUE='&LONGQ;'
     BUILD_QUEUE='&BUILDQ;'
 
-    BASELINE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190409"
-    BASELINE_TEMPLATE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20190409"
+    BASELINE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20191025"
+    BASELINE_TEMPLATE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20191025"
 
     default_resources={
-        #TASKS=156
-        #WRTTASK_PER_GROUP=12
-        #TPN=8
-        #INPES=3
-        #JNPES=8
-        #THRD=1
-        TASKS=150
-        TPN=24
+        TASKS=156
+        WRTTASK_PER_GROUP=12
+        TPN=8
         INPES=3
         JNPES=8
         THRD=1
-        WRTTASK_PER_GROUP=6
+        atm_petlist_bounds="0 155"
+        wav_petlist_bounds="156 263"
+        CPLTASKS=264
     }
     default_stretched_resources={
         TASKS=48
@@ -210,7 +227,7 @@ platform wcoss_dell_p3 {
         THRD=2
     }
     default_nested_resources={
-        use default_stretched_resources
+	use default_stretched_resources
         TASKS=96
     }
     default_threaded_resources={
@@ -231,7 +248,7 @@ platform wcoss_dell_p3 {
                 exit 0
             fi
         fi
-        exit 1
+	exit 1
     ]]]
 
 
@@ -253,7 +270,7 @@ platform wcoss_dell_p3 {
         build_resources=[[[
       <!-- Build job resources minus wallclock -->
       <queue>@[BUILD_QUEUE]</queue>
-      <memory>4G</memory>
+      <memory>6G</memory>
       <cores>1</cores>
       <native>-R 'affinity[core(1)]'</native>
 ]]]
@@ -271,9 +288,6 @@ platform wcoss_dell_p3 {
 
 }
 
-
-
-
 platform wcoss.cray {
     use wcoss.common
     MACHINE_ID='wcoss.cray'
@@ -285,11 +299,16 @@ platform wcoss.cray {
     LONG_TEST_QUEUE='&LONGQ;'
     BUILD_QUEUE='&BUILDQ;'
 
-    TASK_THROTTLE='1'
-    BUILD_WALLTIME="1800"
+    TASK_THROTTLE='11'
+    BUILD_WALLTIME="3600"
+    DEFAULT_TEST_WALLTIME=1800
 
-    BASELINE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180330"
-    BASELINE_TEMPLATE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180330"
+    BASELINE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20191025"
+    BASELINE_TEMPLATE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/FV3-MOM6-CICE5/master-20191025"
+
+    execution_time_modules=[[[
+      module load alps
+    ]]]
 
     default_resources={
         TASKS=150
@@ -298,6 +317,9 @@ platform wcoss.cray {
         INPES=3
         JNPES=8
         THRD=1
+        atm_petlist_bounds="0 149"
+        wav_petlist_bounds="150 263"
+        CPLTASKS=264
     }
     default_stretched_resources={
         TASKS=48
@@ -335,9 +357,9 @@ platform wcoss.cray {
         log_dir="@[TMPrt]/log"
         scheduler="lsfcray"
         entities=[[[
-  <!ENTITY SHORTQ "debug">
-  <!ENTITY LONGQ "debug">
-  <!ENTITY BUILDQ "debug">
+  <!ENTITY SHORTQ "dev">
+  <!ENTITY LONGQ "dev">
+  <!ENTITY BUILDQ "dev">
 ]]]
         build_resources=[[[
       <!-- Build job resources minus wallclock -->

@@ -260,6 +260,7 @@ FLDS_attributes::
       rof2ocn_ice_rmapname = idmap
       rof2ocn_liq_rmapname = idmap
       wav2ocn_smapname = idmap
+      mapuv_with_cart3d = .false.
 ::
 
 CLOCK_attributes::

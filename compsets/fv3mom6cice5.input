@@ -1,10 +1,12 @@
-########################################################################
 load 'platforms.input'
 load 'nemscommon.input'
+load 'fv3.input'
 
-# Common prep step at the top of all fv3 tests:
+########################################################################
 
-embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
+# Common prep step at the top of all fv3cpld tests:
+
+embed bash fv3cpld_prep(RUNDIR,modules,CNTL) [[[
         rm -rf "$RUNDIR"
         mkdir -p "$RUNDIR" "$CNTL"
         cd @[RUNDIR]
@@ -49,7 +51,23 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
 
 build fv3_mom6_cice.exe { 
     # Use NEMSAppBuilder to build a coupled app.   
-    use plat
+    use plat 
+    # Note:
+    #  plat%EXECrt = temporary directory for executables and md5 sums
+    #  plat%INCrt  = temporary directory for modulefiles
+    target="@[plat%EXECrt]/fv3_mom6_cice.exe" 
+    modules.nems="@[plat%INCrt]/modules_fv3_mom6_cice" 
+    md5sum="@[target].md5" 
+ 
+    # The NEMSAppBuilder is another embedded bash script in nemscommon.input 
+    build=NEMSAppBuilder(NEMS.x="@[target]",modules.nems="@[modules.nems]", 
+                         OPTS="app=coupledFV3_MOM6_CICE_NEMS",md5sum="@[md5sum]") 
+}
+
+
+build fv3_mom6_cice_cmeps.exe { 
+    # Use NEMSAppBuilder to build a coupled app.   
+    use plat 
     # Note:
     #  plat%EXECrt = temporary directory for executables and md5 sums
     #  plat%INCrt  = temporary directory for modulefiles
@@ -62,104 +80,17 @@ build fv3_mom6_cice.exe {
                          OPTS="app=coupledFV3_MOM6_CICE_CMEPS",md5sum="@[md5sum]") 
 }
 
-build fv3_mom6_cice_nems.exe {
-    # Use NEMSAppBuilder to build a coupled app.   
-    use plat
-    target="@[plat%EXECrt]/fv3_mom6_cice.exe"
-    modules.nems="@[plat%INCrt]/modules_fv3_mom6_cice"
-    md5sum="@[target].md5"
-
-
-    # The NEMSAppBuilder is another embedded bash script in nemscommon.input 
-    build=NEMSAppBuilder(NEMS.x="@[target]",modules.nems="@[modules.nems]",
-                         OPTS="app=coupledFV3_MOM6_CICE_NEMS",md5sum="@[md5sum]")
-}
 ########################################################################
-
-#NOTE: DO NOT UPDATE the fv3_default variables for coupled variables, 
-#update them within the tests themselves.  The fv3_default variables
-#are updated to match the NEMSfv3gfs variables only. Instead, update
-#the cpl_defaults
-
-# Common variables used by many tests and input files: 
-
-fv3_defaults = {
-    WARM_START='.F.'
-    NGGPS_IC='.T.'
-    EXTERNAL_IC='.T.'
-    MAKE_NH='.T.'
-    MOUNTAIN='.F.'
-    SATMEDMF='.F.'
-    HYBEDMF='.T.'
-    LHEATSTRG='.F.'
-    LGFDLMPRAD='.F.'
-    EFFR_IN='.F.'
-    LDIAG_UGWP='.F.'
-    DO_UGWP='.F.'
-    DO_TOFD='.F.'
-    LSM='1'
-    NA_INIT='1'
-    READ_INCREMENT='.F.'
-    FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24'
-    NSTF_NAME='2,1,1,0,5'
-    FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
-    FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
-    FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
-    FNSMCC="'global_soilmgldas.t126.384.190.grb',"
-    FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb',"
-    LANDICE='.T.'
-
-    ENS_NUM='1'
-    SYEAR='2016'
-    SMONTH='10'
-    SDAY='03'
-    SHOUR='00'
-    DT_ATMOS='1800'
-
-    DAYS='1'
-    FHMAX='24'
-    NPX='97'
-    NPY='97'
-    NPZ='64'
-    NPZP='65'
-    NFHOUT='3'
-    NFHMAX_HF='12'
-    NFHOUT_HF='1'
-    NSOUT='-1'
-
-    QUILTING='.true.'
-    WRITE_GROUP=1
-    NUM_FILES=2
-    FILENAME_BASE="'dyn' 'phy'"
-    OUTPUT_GRID="'cubed_sphere_grid'"
-    OUTPUT_FILE="'netcdf'"
-    WRITE_NEMSIOFLIP='.false.'
-    WRITE_FSYNCFLAG ='.false.'
-    IMO='384'
-    JMO='190'
-    H2O_PHYS='.F.'
-
-    DO_SPPT='.F.'
-    DO_SHUM='.F.'
-    DO_SKEB='.F.'
-    DO_SFCPERTS='.F.'
-    SPPT='-999.0'
-    SHUM='-999.0'
-    SKEB='-999.0'
-
-    IAU_INC_FILES="''"
-
-    CPLFLX='.F.'
-    CPLWAV='.F.'
-    CPL='.false.'
-}
-
 #NOTE: DO NOT UPDATE the fv3_default variables for coupled fiels, 
 #update them within the tests themselves.  The fv3_default variables
 #are updated to match the NEMSfv3gfs variables only. Instead, update
 #the cpl_defaults 
 
-cpl_defaults = { 
+cpl_defaults = {
+    ATMRES=''
+    INPUT_NML="input.mom6.nml.IN"
+    FIELD_TABLE="field_table"
+    NSOUT='-1'
     CPLFLX='.T.'
     CPL='.true.'
     NSTF_NAME='0,0,0,0,0'
@@ -168,7 +99,6 @@ cpl_defaults = {
 #   MOM6_RIVER_RUNOFF='False'
     NPROC_ICE='48'
     DT_ATMOS='900' #needed for C96 cases
-    MEDIATOR='cmeps'
 # defaults for CICE runtype and restart writing
     RUNTYPE='initial' 
     DUMPFREQ='d' 
@@ -176,7 +106,9 @@ cpl_defaults = {
     USE_RESTART_TIME='.false.'
 # setting to true will allow Frazil FW and Salt to be
 # included in fluxes sent to ocean
-    FRAZIL_FWSALT='.false.'
+    FRAZIL_FWSALT='.true.'
+# default to write CICE average history files
+    CICE_HIST_AVG='.true.'
 # default setting for runid
     RUNID='unknown'
 # for FV3: default values will be changed if doing a warm-warm restart
@@ -186,12 +118,14 @@ cpl_defaults = {
     EXTERNAL_IC='.T.'
     NGGPS_IC='.T.'
     MOUNTAIN='.F.'
+# default mediator
+    MEDIATOR=''
 }
 ########################################################################
 # embeded bash script to create input files at prerun from specification 
 # in compset
 
-embed bash edit_inputs(CDATE,DT_CICE,NPROC_ICE,RUNTYPE,USE_RESTART_TIME,FRAZIL_FWSALT,RUNID,DUMPFREQ_N,DUMPFREQ,DT_THERM,DT_DYNAM) [[[
+embed bash edit_inputs(CDATE,ATMRES,DT_CICE,NPROC_ICE,RUNTYPE,USE_RESTART_TIME,FRAZIL_FWSALT,RUNID,CICE_HIST_AVG,DUMPFREQ_N,DUMPFREQ,DT_THERM,DT_DYNAM) [[[ 
 
 python <<EOT
 import os
@@ -227,47 +161,43 @@ istep0=((jday-1)*86400 + hour*3600)/int("@[DT_CICE]")
 with open("ice_in_template",'rt') as inf:
  with open("ice_in",'wf') as outf:
    for x in inf.readlines():
-    newline=x.replace('YEAR_INIT',str(year)) \
-             .replace('ISTEP0',str(istep0)) \
-             .replace('DT_CICE',"@[DT_CICE]") \
-             .replace('NPROC_ICE',"@[NPROC_ICE]")\
-             .replace('RUNTYPE',"@[RUNTYPE]") \
-             .replace('RUNID',"@[RUNID]") \
-             .replace('USE_RESTART_TIME',"@[USE_RESTART_TIME]") \
-             .replace('DUMPFREQ_N',DUMPFREQ_N) \
-             .replace('DUMPFREQ',DUMPFREQ) \
-             .replace('FRAZIL_FWSALT',"@[FRAZIL_FWSALT]")
+    newline=x.replace("YEAR_INIT",str(year)) \
+             .replace("ISTEP0",str(istep0)) \
+             .replace("DT_CICE","@[DT_CICE]") \
+             .replace("NPROC_ICE","@[NPROC_ICE]") \
+             .replace("RUNTYPE","@[RUNTYPE]") \
+             .replace("RUNID","@[RUNID]") \
+             .replace("CICE_HIST_AVG","@[CICE_HIST_AVG]") \
+             .replace("USE_RESTART_TIME","@[USE_RESTART_TIME]") \
+             .replace("DUMPFREQ_N",DUMPFREQ_N) \
+             .replace("DUMPFREQ",DUMPFREQ) \
+             .replace("FRAZIL_FWSALT","@[FRAZIL_FWSALT]")
     outf.write(newline)
 
 #MOM_input
 with open("INPUT/MOM_input_template",'rt') as inf:
  with open("INPUT/MOM_input",'wf') as outf:
    for x in inf.readlines():
-    newline=x.replace('DT_THERM_MOM6',"@[DT_THERM]") \
-             .replace('DT_DYNAM_MOM6',"@[DT_DYNAM]")
+    newline=x.replace("DT_THERM_MOM6","@[DT_THERM]") \
+             .replace("DT_DYNAM_MOM6","@[DT_DYNAM]")
     outf.write(newline)
 
 #diag_table
 with open("diag_table_template",'rt') as inf:
  with open("diag_table",'wf') as outf:
    for x in inf.readlines():
-    newline=x.replace('YMD',ymd) \
-             .replace('SYEAR',str(year).zfill(4)) \
-             .replace('SMONTH',str(month).zfill(2)) \
-             .replace('SDAY',str(day).zfill(2))
+    newline=x.replace("YMD",ymd) \
+             .replace("ATMRES","@[ATMRES]") \
+             .replace("SYEAR",str(year).zfill(4)) \
+             .replace("SMONTH",str(month).zfill(2)) \
+             .replace("SDAY",str(day).zfill(2))
     outf.write(newline)
 EOT
 ]]]
-######################################################################### 
+########################################################################
 
 load 'cpld_fv3_mom6_cice_cold_atm_flux.input'
-load 'cpld_fv3_384_mom6_cice_cold_atm_flux.input'
 load 'cpld_fv3_mom6_cice_2d_atm_flux.input'
-load 'cpld_fv3_384_mom6_cice_2d_atm_flux.input'
-
-load 'cpld_fv3_384_mom6_cice_cold_bm2.input'
-load 'cpld_fv3_384_mom6_cice_warm_bm2.input'
-
 
 ######################################################################## 
 # cold c96
@@ -277,13 +207,6 @@ test cpld_fv3_mom6_cice_cold_atm_flux: fv3_mom6_cice.exe {
 
 } 
 ######################################################################## 
-# cold c384
- 
-test cpld_fv3_384_mom6_cice_cold_atm_flux: fv3_mom6_cice.exe { 
-    use cpld_fv3_384_mom6_cice_cold_atm_flux
- 
-} 
-######################################################################## 
 # warm 2d c96
 
 test cpld_fv3_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe { 
@@ -291,23 +214,47 @@ test cpld_fv3_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe {
  
 } 
 ######################################################################## 
+# cold c384
+ 
+test cpld_fv3_384_mom6_cice_cold_atm_flux: fv3_mom6_cice.exe { 
+    use cpld_fv3_mom6_cice_cold_atm_flux
+
+    ATMRES='384'
+    TEST_DESCR="Fully coupled FV3-MOM6-CICE system - cold 384"
+
+    DT_ATMOS='450'
+    NPX='385'
+    NPY='385'
+    IMO='1536'
+    JMO='768'
+    FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
+    FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
+    FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
+    FNSMCC="'global_soilmgldas.t766.1536.768.grb',"
+    FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+
+    FV3_mosaic="C@[ATMRES]"
+} 
+######################################################################## 
 # warm 2d c384
  
 test cpld_fv3_384_mom6_cice_2d_atm_flux: fv3_mom6_cice.exe { 
-    use cpld_fv3_384_mom6_cice_2d_atm_flux 
+    use cpld_fv3_mom6_cice_2d_atm_flux 
  
-} 
-######################################################################## 
-# cold c384 at given cdate, bm2 input namelist and ICs
- 
-test cpld_fv3_384_mom6_cice_cold_bm2: fv3_mom6_cice.exe { 
-    use cpld_fv3_384_mom6_cice_cold_bm2 
+    ATMRES='384'
+    TEST_DESCR="Fully coupled FV3-MOM6-CICE system - 2d_warm"
 
-} 
-######################################################################## 
-# warm c384 at given cdate, bm2 input namelist and ICs
- 
-test cpld_fv3_384_mom6_cice_warm_bm2: fv3_mom6_cice.exe { 
-    use cpld_fv3_384_mom6_cice_warm_bm2 
- 
+    DT_ATMOS='450'
+    NPX='385'
+    NPY='385'
+    IMO='1536'
+    JMO='768'
+    walltime=5600   # seconds
+    FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
+    FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
+    FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
+    FNSMCC="'global_soilmgldas.t766.1536.768.grb',"
+    FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+
+    FV3_mosaic="C@[ATMRES]"
 } 

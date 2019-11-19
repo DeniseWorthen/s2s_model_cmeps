@@ -74,6 +74,7 @@ runSeq::
 @@[coupling_interval_slow_sec]
    @@[coupling_interval_fast_sec]
       MED med_phases_prep_atm
+      MED med_phases_history_write
       MED -> ATM :remapMethod=redist
       ATM
       ATM -> MED :remapMethod=redist
@@ -86,8 +87,6 @@ runSeq::
       MED med_phases_aofluxes_run
       MED med_phases_prep_ocn_merge
       MED med_phases_prep_ocn_accum_fast
-      MED med_phases_history_write
-      MED med_phases_profile
     @
     MED med_phases_prep_ocn_accum_avg
     MED -> OCN :remapMethod=redist
@@ -265,6 +264,7 @@ FLDS_attributes::
       rof2ocn_ice_rmapname = idmap
       rof2ocn_liq_rmapname = idmap
       wav2ocn_smapname = idmap
+      mapuv_with_cart3d = .false.
 ::
 
 CLOCK_attributes::
@@ -288,8 +288,8 @@ CLOCK_attributes::
       histavg_n = -999
       histavg_option = never
       histavg_ymd = -999
-      history_n = -999
-      history_option = never
+      history_n = 1
+      history_option = nsteps
       history_ymd = -999
       ice_cpl_dt = 1800
       lnd_cpl_dt = 1800
