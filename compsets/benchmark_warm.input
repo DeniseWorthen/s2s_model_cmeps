@@ -10,7 +10,6 @@ test cpld_fv3_384_mom6_cice_2d_bmark: fv3_mom6_cice.exe {
     #DAYS='35'
     #FHMAX='840'
     #walltime=28800   # seconds
-    walltime=1800   # seconds
 
     DT_ATMOS='450'
     NPX='385'
