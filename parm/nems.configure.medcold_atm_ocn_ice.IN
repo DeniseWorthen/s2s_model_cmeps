@@ -35,7 +35,7 @@ OCN_attributes::
   Verbosity = 0
   DumpFields = false
   ProfileMemory = false
-  Overwrite_slice = false
+  Overwrite_timeslice = false
 ::
 
 # ICE #
@@ -45,7 +45,7 @@ ICE_attributes::
   Verbosity = 0
   DumpFields = false
   ProfileMemory = false
-  Overwrite_slice = false
+  Overwrite_timeslice = false
 ::
 
 # Run Sequence #
