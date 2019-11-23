@@ -54,7 +54,6 @@ test cpld_fv3_384_mom6_cice_cold_bmark: fv3_mom6_cice.exe {
       CICE5_IC="@[BM_IC]/cpc"    
 
     # - nems.configure --- 
-    #nems_configure="medcold_atm_ocn_ice" 
     #med_model="nems" 
     #med_petlist_bounds="0 311"
     #atm_model="fv3"
@@ -79,4 +78,4 @@ test cpld_fv3_384_mom6_cice_cold_bmark: fv3_mom6_cice.exe {
     #spawn execute { 
     #    {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
     #} 
-} 
+}
