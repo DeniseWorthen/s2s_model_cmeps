@@ -15,8 +15,8 @@
 	branch = cmeps_integration
 [submodule "MOM6"]
 	path = MOM6
-	url = https://github.com/EMC-MOM6/NEMS-MOM6-FMS
-	branch = cmeps_integration_update
+	url = https://github.com/DeniseWorthen/MOM6-interface
+	branch = feature/noifdefs
 [submodule "FMS"]
 	path = FMS
         url = https://github.com/DeniseWorthen/FMS.git
