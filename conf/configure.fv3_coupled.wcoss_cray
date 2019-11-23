@@ -163,6 +163,10 @@ else
   LIBS += -lnetcdf
 endif
 
+ifeq ($(CMEPS),Y)
+CPPDEFS += -DCMEPS
+endif
+
 LDFLAGS += $(LIBS)
 
 ifdef InNemsMakefile

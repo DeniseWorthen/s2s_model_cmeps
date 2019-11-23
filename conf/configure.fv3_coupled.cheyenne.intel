@@ -211,6 +211,10 @@ ifeq ($(TRANSITION),Y)
 CPPDEFS += -DTRANSITION
 endif
 
+ifeq ($(CMEPS),Y)
+CPPDEFS += -DCMEPS
+endif
+
 LDFLAGS += $(LIBS)
 
 ifdef InNemsMakefile
