@@ -29,5 +29,5 @@
 	branch = feature/bugtracks
 [submodule "CMEPS"]
 	path = CMEPS
-	url = https://github.com/ESCOMP/CMEPS.git
-	branch = mvertens/nems_integration
+	url = https://github.com/DeniseWorthen/CMEPS.git
+	branch = feature/separate_fluxes
